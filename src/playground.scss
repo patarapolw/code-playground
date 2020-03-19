@@ -1,0 +1,30 @@
+html, body, #App {
+  box-sizing: border-box;
+}
+
+#App {
+  width: 100vw;
+  height: 100vh;
+}
+
+#Controls {
+  width: 100%;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-vertical, .flex-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-vertical {
+  flex-direction: column;
+}
+
+.flex-horizontal {
+  flex-direction: row;
+}

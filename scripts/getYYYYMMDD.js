@@ -1,6 +1,6 @@
-function getYYYYMMDD(d0) {
+function getYYYYMMDD (d0) {
   let d = d0
-  if (!d0 instanceof Date) {
+  if (!(d0 instanceof Date)) {
     d = new Date(d0)
   }
   d.setTime(d.getTime() - d.getTimezoneOffset() * 60 * 1000)
@@ -15,12 +15,12 @@ function getYYYYMMDD(d0) {
 }
 
 /**
- * 
- * @param {*} s 
- * @param {number} length 
- * @param {*} [c] 
+ *
+ * @param {*} s
+ * @param {number} length
+ * @param {*} [c]
  */
-function padStart(s, length, c = '') {
+function padStart (s, length, c = '') {
   const s0 = s.toString()
   if (s0.length > length) {
     return s0
