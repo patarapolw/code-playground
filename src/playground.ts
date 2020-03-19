@@ -1,9 +1,6 @@
 import CodeMirror from 'codemirror'
-// import VConsole from 'vconsole'
-import { render, h } from 'preact'
-import htm from 'htm'
-// @ts-ignore
-import safeEval from 'safe-eval'
+import typescript from 'typescript'
+import tsconfig from '../tsconfig.json'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/markdown/markdown.js'
@@ -28,11 +25,7 @@ import 'codemirror/addon/fold/markdown-fold.js'
 import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/theme/monokai.css'
 
-const html = htm.bind(h)
-
-const textAreaEl = document.getElementById('editor') as HTMLTextAreaElement
-
-const cm = CodeMirror.fromTextArea(textAreaEl, {
+const cm = CodeMirror.fromTextArea(document.getElementById('cm') as HTMLTextAreaElement, {
   theme: 'monokai',
   lineNumbers: true,
   autoCloseBrackets: true,
@@ -48,35 +41,33 @@ const cm = CodeMirror.fromTextArea(textAreaEl, {
     }
   },
   foldGutter: true,
-  mode: 'javascript'
+  mode: 'text/javascript'
 })
 
 cm.setSize('100%', '100%')
 
-const App = () => {
-  return html`
-  <div class="flex-horizontal control is-expanded">
-    <div class="select is-fullwidth">
-      <select class="control" onchange=${({ target }: {
-        target: HTMLSelectElement
-      }) => {
-        cm.setOption('mode', target.value)
-      }}>
-        <option value="typescript">TypeScript</option>
-        <option selected value="javascript">JavaScript</option>
-        <option value="python">Python (Brython)</option>
-      </select>
-    </div>
-    <div class="buttons">
-      <button class="button" onclick=${() => {
-        safeEval(cm.getValue())
-      }}>
-        <div class="icon">
-          <i class="fas fa-play"></i>
-        </div>
-      </button>
-    </div>
-  </div>`
-}
+// @ts-ignore
+window.outputEl = document.getElementById('Output')
 
-render(html`<${App}/>`, document.getElementById('Controls') as HTMLDivElement)
+document.querySelectorAll('#lang-select').forEach((el) => {
+  if (el instanceof HTMLSelectElement) {
+    el.onchange = () => {
+      cm.setOption('mode', el.value)
+    }
+  }
+})
+
+document.querySelectorAll('#lang-select-button').forEach((el) => {
+  if (el instanceof HTMLButtonElement) {
+    el.onclick = () => {
+      let v = cm.getValue()
+      const mode = cm.getOption('mode').split('/')[1]
+      if (mode === 'typescript') {
+        v = typescript.transpileModule(v, tsconfig as any).outputText
+      }
+
+      // eslint-disable-next-line no-eval
+      eval(v)
+    }
+  }
+})

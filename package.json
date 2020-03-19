@@ -1,11 +1,11 @@
 {
   "name": "code-playground",
-  "version": "1.0.0",
+  "private": true,
   "description": "One of them, with good code completion is",
-  "main": "index.js",
   "scripts": {
     "preinstall": "if !(test -x is-npm); then is-npm; fi",
     "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,11 +28,8 @@
   "dependencies": {
     "@types/codemirror": "0.0.88",
     "codemirror": "^5.52.0",
-    "htm": "^3.0.3",
-    "preact": "^10.3.4",
     "safe-eval": "^0.4.1",
-    "typescript": "^3.8.3",
-    "vconsole": "^3.3.4"
+    "typescript": "^3.8.3"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.24.0",
